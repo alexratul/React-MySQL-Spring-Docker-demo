@@ -32,6 +32,9 @@ services:
   back-end:
       build:
         context: ./02-backend/
+      
+      env_file:
+        - .env
 
       depends_on:
         mysql:
