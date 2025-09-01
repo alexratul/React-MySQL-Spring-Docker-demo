@@ -1,0 +1,31 @@
+version: "3.9"
+services:
+  mysql:
+    # build:
+    #   context: ./database
+
+    image: mysql:9.4.0
+    container_name: mysql_container
+
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "3306:3306"
+    volumes:
+      # The path on the host machine where ther database files are going to be stored!!
+      - ./database/mysql-data:/var/lib/mysql
+      # Optional: initialization scripts (run once on first startup if DB is empty)
+      - ./database/initdb:/docker-entrypoint-initdb.d
+
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD || exit 1",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+

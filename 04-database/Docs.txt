@@ -1,0 +1,10 @@
+https://docs.docker.com/compose/gettingstarted/
+
+https://docs.docker.com/guides/databases/ 
+
+https://docs.docker.com/compose/how-tos/startup-order/
+
+https://docs.docker.com/reference/compose-file/services/#depends_on
+
+
+https://github.com/docker/awesome-compose/blob/master/react-java-mysql/compose.yaml
