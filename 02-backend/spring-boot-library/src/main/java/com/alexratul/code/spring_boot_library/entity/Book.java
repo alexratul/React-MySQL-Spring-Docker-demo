@@ -1,6 +1,9 @@
 package com.alexratul.code.spring_boot_library.entity;
 
 import lombok.*;
+
+import java.math.BigInteger;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -11,7 +14,7 @@ public class Book{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    private BigInteger id;
 
     @Column(name = "title", nullable = false, length = 255)
     private String title;
