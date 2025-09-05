@@ -8,7 +8,10 @@ services:
     env_file:
       - ../.env
     ports:
-      - "3306:3306"
+      # If you want to expose the container to the host put hostport:container port
+      # Otherwise only expose the container to other containers
+      # - "3306:3306"  
+      - "3306"
     volumes:
       # The path on the host machine where ther database files are going to be stored!!
       - ../04-database/database/mysql-data:/var/lib/mysql
@@ -26,30 +29,6 @@ services:
       timeout: 5s
       start_period: 5m
     
-    networks:
-      - my-app-network
-
-  # flyway:
-  #   image: flyway/flyway:10
-  #   depends_on:
-  #     mysql:
-  #       condition: service_healthy
-  #   command: >
-  #     -url=jdbc:mysql://mysql:3306/$$MYSQL_DATABASE
-  #     -user=$$MYSQL_USER
-  #     -password=$$MYSQL_PASSWORD
-  #     -connectRetries=30
-  #     migrate
-  #   volumes:
-  #     - ../04-database/database/initdb:/flyway/sql:ro
-  #   restart: "no"
-    
-  #   env_file:
-  #     - ../.env
-  
-  #   networks:
-  #   - my-app-network
-
   back-end:
       build:
         context: ./
@@ -68,10 +47,3 @@ services:
 
       ports:
          - "8080:8080"
-
-      networks:
-      - my-app-network 
-
-networks:
-  my-app-network:
-    driver: bridge

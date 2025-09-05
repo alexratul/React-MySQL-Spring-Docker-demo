@@ -22,11 +22,11 @@ And a file .env.properties that must be a copy of the content of the .env file
 1. Open an terminal pointing to the root folder of the repo
 2. Run the following command to trigger the docker compose
     ```
-    podman compose --file docker-compose.yml up --build
+    podman compose down && podman compose --file docker-compose.yml up --build -d
     ```
 
     In case of using docker use the following command
 
     ```
-    docker-compose --file docker-compose.yml up --build
+    docker-compose down && docker-compose --file docker-compose.yml up --build -d
     ```
