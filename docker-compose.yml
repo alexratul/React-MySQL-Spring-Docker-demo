@@ -6,7 +6,7 @@ services:
 
     restart: unless-stopped
     env_file:
-      - ../.env
+      - .env
     ports:
       # If you want to expose the container to the host put hostport:container port
       # Otherwise only expose the container to other containers
@@ -14,51 +14,26 @@ services:
       - "3306"
     volumes:
       # The path on the host machine where ther database files are going to be stored!!
-      - ../04-database/database/mysql-data:/var/lib/mysql
+      - ./04-database/database/mysql-data:/var/lib/mysql
       # Optional: initialization scripts (run once on first startup if DB is empty)
-      - ../04-database/database/initdb:/docker-entrypoint-initdb.d
+      - ./04-database/database/initdb:/docker-entrypoint-initdb.d
 
     healthcheck:
-      test:
-        [
+      test: [
           "CMD-SHELL",
           "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD || exit 1",
-        ]
-      interval: 3s
+          ]
+      interval: 5s
       retries: 20
-      timeout: 5s
-      start_period: 5m
+      timeout: 30s
+      start_period: 3m
     
-    networks:
-      - my-app-network
-
-  # flyway:
-  #   image: flyway/flyway:10
-  #   depends_on:
-  #     mysql:
-  #       condition: service_healthy
-  #   command: >
-  #     -url=jdbc:mysql://mysql:3306/$$MYSQL_DATABASE
-  #     -user=$$MYSQL_USER
-  #     -password=$$MYSQL_PASSWORD
-  #     -connectRetries=30
-  #     migrate
-  #   volumes:
-  #     - ../04-database/database/initdb:/flyway/sql:ro
-  #   restart: "no"
-    
-  #   env_file:
-  #     - ../.env
-  
-  #   networks:
-  #   - my-app-network
-
   back-end:
       build:
-        context: ./
+        context: ./02-backend
       
       env_file:
-        - ../.env
+        - .env
 
       environment:
           SPRING_DATASOURCE: mysql
@@ -72,9 +47,6 @@ services:
       ports:
          - "8080:8080"
 
-      networks:
-      - my-app-network    
-
   front-end:
       build:
         context: ./03-frontend/react-library/
@@ -83,9 +55,12 @@ services:
         mysql:
             condition: service_healthy
         back-end:
-            condition: service_started
+            condition: service_healthy
 
       container_name: react_frontend_container
+      
+      env_file:
+        - .env
 
       ports:
          - "3000:3000" 
@@ -101,6 +76,3 @@ services:
       #   retries: 10
       #   start_period: 20s
 
-networks:
-  my-app-network:
-    driver: bridge
