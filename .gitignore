@@ -6,3 +6,4 @@
 
 #Local variables for the containers
 .env
+.env.properties
