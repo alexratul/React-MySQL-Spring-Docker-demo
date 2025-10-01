@@ -18,12 +18,12 @@ DROP TABLE IF EXISTS `book`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `book` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
-  `title` varchar(45) DEFAULT NULL,
-  `author` varchar(45) DEFAULT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `author` varchar(255) DEFAULT NULL,
   `description` text DEFAULT NULL,
   `copies` int(11) DEFAULT NULL,
   `copies_available` int(11) DEFAULT NULL,
-  `category` varchar(11) DEFAULT NULL,
+  `category` varchar(110) DEFAULT NULL,
   `img` MEDIUMBLOB  DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;

@@ -2,19 +2,22 @@ package com.alexratul.code.spring_boot_library.entity;
 
 import lombok.*;
 
-import java.math.BigInteger;
-
 import jakarta.persistence.*;
 
+@Getter
+@Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name="book")
-@Data
+
 public class Book{
     
-    @Id
+    
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private BigInteger id;
+    @EqualsAndHashCode.Include
+    @Id
+    private Long id;
 
     @Column(name = "title", nullable = false, length = 255)
     private String title;
@@ -35,6 +38,7 @@ public class Book{
     private String category;
 
     @Column(name = "img")
+    @Lob
     private String img;
 
     // @Column(name = "created_at")

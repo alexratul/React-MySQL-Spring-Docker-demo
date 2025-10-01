@@ -1,6 +1,72 @@
 import { ReturnBook } from "./ReturnBook";
+import { useEffect, useState } from "react";
+import BookModel from "../../../models/BookModel";
+import { error } from "console";
+import { SpinnerLoading } from "../../Utils/SpinnerLoading";
 
 export const Carousel = () => {
+	const [books, setBooks] = useState<BookModel[]>([]);
+	const [isLoading, setIsLoading] = useState(true);
+	const [httpError, setHttpError] = useState(null);
+
+	useEffect(() => {
+		const fetchBooks = async () => {
+			const host: string = "localhost";
+			const baseUrl: string = `http://${host}:8080/api/books`;
+
+			const url: string = `${baseUrl}?page=0&size=9`;
+			const respose = await fetch(url);
+
+			if (!respose.ok) {
+				throw new Error(`Something went wrong!`);
+			}
+
+			const responseJson = await respose.json();
+
+			const responseData = responseJson._embedded.books;
+
+			const loadedBooks: BookModel[] = [];
+
+			// console.log(loadedBooks);
+
+			for (const key in responseData) {
+				loadedBooks.push({
+					id: responseData[key].id,
+					title: responseData[key].title,
+					author: responseData[key].author,
+					description: responseData[key].description,
+					copies: responseData[key].copies,
+					copiesAvailable: responseData[key].copiesAvailable,
+					category: responseData[key].category,
+					img: responseData[key].img,
+				});
+			}
+
+			setBooks(loadedBooks);
+			setIsLoading(false);
+		};
+		fetchBooks().catch((error: any) => {
+			setIsLoading(false);
+			setHttpError(error.message);
+		});
+	}, []);
+
+	if (isLoading) {
+		return (
+			<div className='container m-5'>
+				<SpinnerLoading></SpinnerLoading>
+			</div>
+		);
+	}
+
+	if (httpError) {
+		return (
+			<div className='container m-5'>
+				<p>{httpError}</p>
+			</div>
+		);
+	}
+
 	return (
 		<div className='container mt-5' style={{ height: 550 }}>
 			<div className='homepage-carousel-title'>
@@ -15,19 +81,20 @@ export const Carousel = () => {
 				<div className='carousel-inner'>
 					<div className='carousel-item active'>
 						<div className='row d-flex justify-content-center align-items-center'>
-							<ReturnBook x={1}></ReturnBook>
+							{books.slice(0, 3).map((book) => (
+								<ReturnBook book={book} key={book.id}></ReturnBook>
+							))}
 						</div>
 					</div>
+
 					<div className='carousel-item'>
 						<div className='row d-flex justify-content-center align-items-center'>
-							<ReturnBook x={1}></ReturnBook>
+							{books.slice(6, 9).map((book) => (
+								<ReturnBook book={book} key={book.id}></ReturnBook>
+							))}
 						</div>
 					</div>
-					<div className='carousel-item'>
-						<div className='row d-flex justify-content-center align-items-center'>
-							<ReturnBook x={1}></ReturnBook>
-						</div>
-					</div>
+
 					<button
 						className='carousel-control-prev'
 						type='button'
@@ -57,7 +124,7 @@ export const Carousel = () => {
 
 			{/* Mobile */}
 			<div className='d-lg-none mt-3'>
-				<ReturnBook x={1}></ReturnBook>
+				<ReturnBook book={books[7]} key={books[7].id}></ReturnBook>
 			</div>
 			<div className='homepage-carousel-title mt-3'>
 				<a className='btn btn-outline-secondary btn-lg' href='#'>
