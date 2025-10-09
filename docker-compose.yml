@@ -46,8 +46,8 @@ services:
     container_name: springBoot_backend_container
 
     ports:
-      # - "8080:8080"
-      - "8080"
+       - "8080:8080"
+      #- "8080"
   front-end:
     build:
       context: ./03-frontend/react-library/
