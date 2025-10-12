@@ -12,6 +12,8 @@ export const SearchBooksPage = () => {
 	const [booksPerPage] = useState(5);
 	const [totalAmountOfBooks, setTotalAmountOfBooks] = useState(0);
 	const [totalPages, setTotalPages] = useState(0);
+	const [search, setSearch] = useState("");	
+	const [searchUrl, setSearchUrl] = useState("");
 
 
 	useEffect(() => {
@@ -19,16 +21,23 @@ export const SearchBooksPage = () => {
 			// const host: string = process.env.REACT_APP_BACKEND_HOST || "localhost";
 			const host: string = "localhost";
 			const baseUrl: string = `http://${host}:8080/api/books`;
-			console.log(baseUrl);
+			// console.log(baseUrl);
 
-			const url: string = `${baseUrl}?page=${currentPage - 1}&size=${booksPerPage}`;
-			const respose = await fetch(url);
+			let url: string = ``;
+			if (search === " ") {
+				url = `${baseUrl}?page=${currentPage - 1}&size=${booksPerPage}`;
+			}
+			else { 
+				url = baseUrl + searchUrl;
+			}
 
-			if (!respose.ok) {
+			const response = await fetch(url);
+
+			if (!response.ok) {
 				throw new Error(`Something went wrong!`);
 			}
 
-			const responseJson = await respose.json();
+			const responseJson = await response.json();
 
 			const responseData = responseJson._embedded.books;
 
@@ -59,7 +68,7 @@ export const SearchBooksPage = () => {
 			setHttpError(error.message);
 		});
 		window.scrollTo(0, 0);
-	}, [currentPage]);
+	}, [currentPage, searchUrl]);
 
 	if (isLoading) {
 		return (
@@ -75,6 +84,15 @@ export const SearchBooksPage = () => {
 				<p>{httpError}</p>
 			</div>
 		);
+	}
+
+	const searchHandleChange = () => {
+		if (search === '') { 
+			setSearchUrl('')
+		}
+		else {
+			setSearchUrl(`/search/findByTitleContaining?title=${search}&page=${currentPage - 1}&size=${booksPerPage}`);
+		}
 	}
 
 	const indexOfLastBook: number = currentPage * booksPerPage;
@@ -95,8 +113,9 @@ export const SearchBooksPage = () => {
 									type='search'
 									placeholder='Search'
 									aria-label='Search'
+									onChange={(e) => setSearch(e.target.value)}
 								/>
-								<button className='btn btn-outline-success' type='submit'>
+								<button className='btn btn-outline-success' type='submit' onClick={searchHandleChange}>
 									Search
 								</button>
 							</div>
