@@ -4,13 +4,23 @@ import { HomePage } from "./layouts/HomePage/HomePage";
 import { Footer } from "./layouts/NavbarAndFooter/Footer";
 import { Navbar } from "./layouts/NavbarAndFooter/Navbar";
 import { SearchBooksPage } from "./layouts/SearchBookPage/SearchBooksPage";
+import { Route,Switch,Redirect } from "react-router-dom";
 
 export const App = () => {
 	return (
 		<div>
 			<Navbar></Navbar>
-			{/* <HomePage></HomePage> */}
-			<SearchBooksPage></SearchBooksPage>
+			<Switch>
+				<Route path="/" exact>
+					<Redirect to="/home" />
+				</Route>
+				<Route path="/home" exact>
+					<HomePage></HomePage>
+				</Route>
+				<Route path="/search" exact>
+					<SearchBooksPage></SearchBooksPage>
+				</Route>
+			</Switch>
 			<Footer></Footer>
 		</div>
 	);

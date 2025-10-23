@@ -13,10 +13,10 @@ export const Navbar = () => {
         <div className='collapse navbar-collapse' id='navbarNavDropdown'>
           <ul className='navbar-nav'>
             <li className='nav-item'>
-              <a className='nav-link' href='#'> Home</a>
+              <a className='nav-link' href='/home'> Home</a>
             </li>
             <li className='nav-item'>
-               <a className='nav-link' href='#'> Search books</a>
+               <a className='nav-link' href='/search'> Search books</a>
             </li>
           </ul>
           <ul className='navbar-nav ms-auto'>
