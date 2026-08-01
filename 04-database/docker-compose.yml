@@ -1,23 +1,15 @@
-version: "3.9"
 services:
   mysql:
-    # build:
-    #   context: ./database
-
-    image: mysql:8.4
-    container_name: mysql_container
-
+    # image: mysql:8.4
+    build: ./database/
     restart: unless-stopped
     env_file:
       - ./../.env
     ports:
-      - "3306:3306"
+      - '3306:3306'
     volumes:
-      # The path on the host machine where ther database files are going to be stored!!
-      - ./database/mysql-data:/var/lib/mysql
-      # Optional: initialization scripts (run once on first startup if DB is empty)
-      - ./database/initdb:/docker-entrypoint-initdb.d
-
+      - ./database/mysql-data:/var/lib/mysql:Z
+      # - ./database/initdb:/docker-entrypoint-initdb.d:RW
     healthcheck:
       test:
         [

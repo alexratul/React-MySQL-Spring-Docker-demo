@@ -28,3 +28,9 @@
    ```
    podman compose --file docker-compose.yml up --build
    ```
+
+### Extra step
+Run the following command on the folder to enable execution
+```
+sudo chmod -R 777 mysql-data
+```
