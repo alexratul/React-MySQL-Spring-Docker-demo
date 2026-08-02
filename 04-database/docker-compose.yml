@@ -8,7 +8,7 @@ services:
     ports:
       - '3306:3306'
     volumes:
-      - data-volume:/var/lib/mysql:z
+      - database-volume:/var/lib/mysql:z
       # - ./database/initdb:/docker-entrypoint-initdb.d:z
     healthcheck:
       test:
@@ -22,5 +22,5 @@ services:
       start_period: 20s
 
 volumes:
-  data-volume:
+  database-volume:
     driver: local 
