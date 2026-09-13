@@ -10,7 +10,7 @@ services:
       # If you want to expose the container to the host put hostport:container port
       # Otherwise only expose the container to other containers
       # - "3306:3306"  
-      - "3306"
+      - "3306:3306"
     volumes:
       # The path on the host machine where ther database files are going to be stored!!
       - database-volume:/var/lib/mysql
@@ -27,8 +27,7 @@ services:
       start_period: 5m
     
   back-end:
-      build:
-        context: ./
+      build: ../../02-backend/
       
       env_file:
         - ../../.env
