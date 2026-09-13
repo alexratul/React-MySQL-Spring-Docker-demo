@@ -4,8 +4,8 @@ services:
     build: ../../04-database/database/
     container_name: mysql_container
     restart: unless-stopped
-    # env_file:
-    #   - ../../.env
+    env_file:
+      - ../../.env
     ports:
       # If you want to expose the container to the host put hostport:container port
       # Otherwise only expose the container to other containers
