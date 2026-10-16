@@ -74,6 +74,7 @@ export const BookCheckoutPage = () => {
               height="349"
               alt="Book"
             />
+            <img src={require(`../../Images/BooksImages/book-luv2code-1000.png`)} alt="Book" width="226" height="349" />
           </div>
           <div className="col-4 col-md-4 container">
             <div className="ml-2">
