@@ -1,4 +1,4 @@
-package com.alexratul.code.spring_boot_library;
+package com.alexratul.spring_boot_library;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
