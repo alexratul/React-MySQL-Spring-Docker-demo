@@ -9,11 +9,10 @@ services:
     ports:
       # If you want to expose the container to the host put hostport:container port
       # Otherwise only expose the container to other containers
-      # - "3306:3306"  
-      - "3306"
+      - "3306:3306"
     volumes:
       # The path on the host machine where ther database files are going to be stored!!
-      - database-volume:/var/lib/mysql
+      - database-volume-02-backend:/var/lib/mysql
 
     healthcheck:
       test:
@@ -26,25 +25,25 @@ services:
       timeout: 5s
       start_period: 5m
     
-  back-end:
-      build:
-        context: ./
+  # back-end:
+  #     build:
+  #       context: ./
       
-      env_file:
-        - ../.env
+  #     env_file:
+  #       - ../.env
 
-      environment:
-          SPRING_DATASOURCE: mysql
+  #     environment:
+  #         SPRING_DATASOURCE: mysql
 
-      depends_on:
-        mysql:
-            condition: service_healthy
+  #     depends_on:
+  #       mysql:
+  #           condition: service_healthy
 
-      container_name: springBoot_backend_container
+  #     container_name: springBoot_backend_container
 
-      ports:
-         - "8080:8080"
+  #     ports:
+  #        - "8080:8080"
 
 volumes:
-  database-volume:
+  database-volume-02-backend:
     driver: local 
