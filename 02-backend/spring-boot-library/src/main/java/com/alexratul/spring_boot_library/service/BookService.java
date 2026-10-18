@@ -1,8 +1,8 @@
 package com.alexratul.spring_boot_library.service;
 
 import com.alexratul.spring_boot_library.entity.Book;
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 public interface BookService {
-    List<Book> getAllBooks();
+    Page<Book> getAllBooks(int pageNo, int pageSize);
 }
