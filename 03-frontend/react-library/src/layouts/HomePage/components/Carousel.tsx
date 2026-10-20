@@ -4,6 +4,16 @@ import BookModel from "../../../models/BookModel";
 import { error } from "console";
 import { SpinnerLoading } from "../../Utils/SpinnerLoading";
 
+
+interface BookResponse {
+	content: BookModel[];
+	page: {
+		totalElements: number;
+		totalPages: number;
+	}
+}
+
+
 export const Carousel = () => {
 	const [books, setBooks] = useState<BookModel[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
@@ -15,35 +25,17 @@ export const Carousel = () => {
 			const host: string = "localhost";
 			const baseUrl: string = `http://${host}:8080/api/books`;
 
-			const url: string = `${baseUrl}?page=0&size=9`;
+			const url: string = `${baseUrl}?pageNo=0&pageSize=10`;
 			const respose = await fetch(url);
+			// console.log(respose)
 
 			if (!respose.ok) {
 				throw new Error(`Something went wrong!`);
 			}
 
-			const responseJson = await respose.json();
+			const data: BookResponse = await respose.json()
 
-			const responseData = responseJson._embedded.books;
-
-			const loadedBooks: BookModel[] = [];
-
-			// console.log(loadedBooks);
-
-			for (const key in responseData) {
-				loadedBooks.push({
-					id: responseData[key].id,
-					title: responseData[key].title,
-					author: responseData[key].author,
-					description: responseData[key].description,
-					copies: responseData[key].copies,
-					copiesAvailable: responseData[key].copiesAvailable,
-					category: responseData[key].category,
-					img: responseData[key].img,
-				});
-			}
-
-			setBooks(loadedBooks);
+			setBooks(data.content);
 			setIsLoading(false);
 		};
 		fetchBooks().catch((error: any) => {

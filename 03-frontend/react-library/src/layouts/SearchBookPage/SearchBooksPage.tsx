@@ -4,6 +4,14 @@ import { SpinnerLoading } from "../Utils/SpinnerLoading";
 import { SearchBook } from "./components/SearchBook";
 import { Pagination } from "../Utils/Pagination";
 
+interface BookResponse {
+	content: BookModel[];
+	page: {
+		totalElements: number;
+		totalPages: number;
+	}
+}
+
 export const SearchBooksPage = () => {
 	const [books, setBooks] = useState<BookModel[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
@@ -40,30 +48,11 @@ export const SearchBooksPage = () => {
 				throw new Error(`Something went wrong!`);
 			}
 
-			const responseJson = await response.json();
+			const data: BookResponse = await response.json();
+			setTotalAmountOfBooks(data.page.totalElements);
+			setTotalPages(data.page.totalPages);			
+			setBooks(data.content);
 
-			const responseData = responseJson._embedded.books;
-
-			const loadedBooks: BookModel[] = [];
-			setTotalAmountOfBooks(responseJson.page.totalElements);
-			setTotalPages(responseJson.page.totalPages);
-
-			// console.log(loadedBooks);
-
-			for (const key in responseData) {
-				loadedBooks.push({
-					id: responseData[key].id,
-					title: responseData[key].title,
-					author: responseData[key].author,
-					description: responseData[key].description,
-					copies: responseData[key].copies,
-					copiesAvailable: responseData[key].copiesAvailable,
-					category: responseData[key].category,
-					img: responseData[key].img,
-				});
-			}
-
-			setBooks(loadedBooks);
 			setIsLoading(false);
 		};
 		fetchBooks().catch((error: any) => {
